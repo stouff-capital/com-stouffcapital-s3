@@ -1,0 +1,23 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-s3
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  tls:
+  - hosts:
+    - s3.stouffcapital.com
+    secretName: s3-stouffcapital-service-tls
+  backend:
+    serviceName: default-http-backend
+    servicePort: 80
+  rules:
+  - host: s3.stouffcapital.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: minio-service
+          servicePort: 9000
