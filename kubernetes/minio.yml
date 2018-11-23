@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: minio
+  namespace: storage
 spec:
   strategy:
     type: Recreate
@@ -27,12 +28,12 @@ spec:
         - name: MINIO_ACCESS_KEY
           valueFrom:
             secretKeyRef:
-              name: s3-key
+              name: s3-minio-key
               key: AccessKey
         - name: MINIO_SECRET_KEY
           valueFrom:
             secretKeyRef:
-              name: s3-key
+              name: s3-minio-key
               key: SecretKey
         ports:
         - containerPort: 9000
@@ -52,11 +53,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio-service
+  name: s3-minio-service
+  namespace: storage
 spec:
-  type: NodePort
   ports:
     - port: 9000
       protocol: TCP
   selector:
     app: minio
+  clusterIP: None

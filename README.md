@@ -4,7 +4,10 @@
 
 ### create secrets
 
-`kubectl create secret generic s3-key --from-literal=AccessKey=<accessKey> --from-literal=SecretKey=<secretKey>`
+`kubectl -n storage create secret generic s3-minio-key --from-literal=AccessKey=<accessKey> --from-literal=SecretKey=<secretKey>`
 
 ### deployment
-`kubectl create -f kubernetes/minio.yml`
+
+1. `kubectl create -f kubernetes/minio-pvc.yml`
+1. `kubectl create -f kubernetes/minio.yml`
+1. `kubectl create -f kubernetes/tech-stouffcapital-s3-ing-ssl.yml`
